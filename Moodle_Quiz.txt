@@ -1,0 +1,37 @@
+let output = [];
+
+document.querySelectorAll('.que').forEach((q, i) => {
+    let question = q.querySelector('.qtext')?.innerText.trim();
+
+    let answers = [...q.querySelectorAll('.answer')]
+        .map(a => {
+            let lines = a.innerText
+                .split('\n')
+                .map(l => l.trim())
+                .filter(Boolean);
+
+            if (lines.length >= 2 && /^[a-d]\.$/i.test(lines[0])) {
+                return ${lines[0]} ${lines.slice(1).join(' ')};
+            }
+
+            return lines.join(' ');
+        })
+        .join('\n');
+
+    let correct = q.querySelector('.rightanswer')?.innerText
+        .replace('The correct answer is:', '')
+        .trim();
+
+    output.push(
+`Question ${i + 1}:
+${question}
+
+${answers}
+
+Correct answer:
+${correct}
+`
+    );
+});
+
+console.log(output.join('\n----------------------\n'));
